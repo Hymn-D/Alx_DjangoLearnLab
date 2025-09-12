@@ -34,12 +34,13 @@ DEBUG = False
 # Enforce HTTPS-only cookies
 'CSRF_COOKIE_SECURE = True',
 'SESSION_COOKIE_SECURE = True',
-
-
-# Optional but recommended
-SECURE_HSTS_SECONDS = 31536000  # Enforce HTTPS for one year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# Enforce HTTPS for all connections
+'SECURE_SSL_REDIRECT = True', 
+# Redirect all HTTP requests to HTTPS
+# HTTP Strict Transport Security (HSTS)
+'SECURE_HSTS_SECONDS = 31536000  # 1 year',
+'SECURE_HSTS_INCLUDE_SUBDOMAINS = True',
+'SECURE_HSTS_PRELOAD = True',
 
 
 ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
