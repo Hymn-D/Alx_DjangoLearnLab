@@ -3,9 +3,24 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from .models import Article
-from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+
+
+from django.shortcuts import render
+from .forms import BookSearchForm
+from .models import Book
+
+def book_list(request):
+    form = BookSearchForm(request.GET or None)
+    books = []
+
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        books = Book.objects.filter(title__icontains=query)
+
+    return render(request, 'bookshelf/book_list.html', {'form': form, 'books': books})
+
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
