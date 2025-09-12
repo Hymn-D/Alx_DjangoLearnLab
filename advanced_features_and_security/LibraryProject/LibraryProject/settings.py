@@ -23,9 +23,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2zd5uov+q1tshpg8x20ue%ytgg+6m63woz7d7ep@l-c-c^s=ki'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# Prevent content type sniffing
+'SECURE_CONTENT_TYPE_NOSNIFF = True',
+# Enable browser XSS protection
+'SECURE_BROWSER_XSS_FILTER = True',
+# Prevent your site from being embedded in iframes (clickjacking protection)
+'X_FRAME_OPTIONS = DENY',
+# Enforce HTTPS-only cookies
+'CSRF_COOKIE_SECURE = True',
+'SESSION_COOKIE_SECURE = True',
+
+# Optional but recommended
+SECURE_HSTS_SECONDS = 31536000  # Enforce HTTPS for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
 
 
 # Application definition
@@ -42,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
