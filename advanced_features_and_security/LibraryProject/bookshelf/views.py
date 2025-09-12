@@ -3,16 +3,13 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from .models import Article
-from django.contrib.auth.decorators import permission_required
-from .models import Book
-
-
+from django.contrib.auth.decorators import permission_required  
 from django.shortcuts import render
-from .forms import BookSearchForm
+from .forms import ExampleForm
 from .models import Book
 
 def book_list(request):
-    form = BookSearchForm(request.GET or None)
+    form = ExampleForm(request.GET or None)
     books = []
 
     if form.is_valid():
