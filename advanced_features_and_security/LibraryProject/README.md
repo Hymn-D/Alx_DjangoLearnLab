@@ -29,3 +29,17 @@ python manage.py migrate
 Views are protected using `@permission_required`. Users without appropriate permissions will receive a 403 Forbidden error.
 
 
+## Content Security Policy (CSP)
+
+To mitigate XSS risks, CSP headers were implemented using the `django-csp` middleware.
+
+### Configuration:
+- `CSP_DEFAULT_SRC`: `'self'`
+- `CSP_SCRIPT_SRC`: `'self'`, `https://trusted.cdn.com`
+- `CSP_STYLE_SRC`: `'self'`, `https://fonts.googleapis.com`
+
+### Middleware:
+Added `csp.middleware.CSPMiddleware` to `MIDDLEWARE` in `settings.py`.
+
+### Notes:
+All external resources used in templates are whitelisted explicitly.
