@@ -3,6 +3,20 @@ from rest_framework import generics, permissions, filters
 from .models import Book
 from .serializers import BookSerializer
 
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookUpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'pk'
+
+class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'pk'
+
 
 # GET all books, POST new book
 class BookListCreateView(generics.ListCreateAPIView):
