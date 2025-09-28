@@ -18,5 +18,5 @@ urlpatterns = [
 
 urlpatterns = [
      # List all books OR create a new book
-    path('books/', BookListCreateView.as_view(), name='book-create'),
+    path('books/create', BookListCreateView.as_view(), name='book-create'),
 ]
