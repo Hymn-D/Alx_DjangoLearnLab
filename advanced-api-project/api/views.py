@@ -38,13 +38,3 @@ class BookDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
-
-# GET one book, PUT/PATCH update, DELETE book
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def perform_update(self, serializer):
-     serializer.save()
-
