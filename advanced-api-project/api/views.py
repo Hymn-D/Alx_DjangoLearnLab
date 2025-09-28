@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, permissions, filters
 from .models import Book
 from .serializers import BookSerializer
 
@@ -8,10 +8,20 @@ from .serializers import BookSerializer
 class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # Auth required for POST
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'publication_year']  # enable ?search=
+    ordering_fields = ['publication_year', 'title']  # enable ?ordering=
 
+def perform_create(self, serializer): 
+    serializer.save()
 
 # GET one book, PUT/PATCH update, DELETE book
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_update(self, serializer):
+     serializer.save()
 
