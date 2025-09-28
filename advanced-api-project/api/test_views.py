@@ -13,6 +13,9 @@ class BookAPITestCase(APITestCase):
             publication_year=1958,
             author=self.author
         )
+    def test_authenticated_access(self):
+        login_successful = self.client.login(username='esther', password='testpass')
+        self.assertTrue(login_successful)
 
     def test_list_books(self):
         response = self.client.get('/books/')
