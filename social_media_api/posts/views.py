@@ -1,12 +1,51 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import viewsets, permissions, filters, status
+from rest_framework import viewsets, permissions, filters, status, generics
+from rest_framework.permissions import IsAuthenticated
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer # type: ignore
 from notifications.models import Notification # type: ignore
 from django.contrib.contenttypes.models import ContentType
 
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        # ✅ use generics.get_object_or_404
+        post = generics.get_object_or_404(Post, pk=pk)
+        # ✅ use Like.objects.get_or_create
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
+            return Response({'detail': 'You already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # ✅ create a notification for the post author
+        if post.author != request.user:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                target=post
+            )
+
+        return Response({'detail': 'Post liked successfully.'}, status=status.HTTP_200_OK)
+
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        # ✅ use generics.get_object_or_404
+        post = generics.get_object_or_404(Post, pk=pk)
+        like = Like.objects.filter(user=request.user, post=post).first()
+
+        if like:
+            like.delete()
+            return Response({'detail': 'Post unliked successfully.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+        
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
