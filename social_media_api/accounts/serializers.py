@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from posts.models import Post  # type: ignore
 
 User = get_user_model()
 
@@ -40,3 +41,10 @@ class LoginSerializer(serializers.Serializer):
         if user:
             return user
         raise serializers.ValidationError("Invalid credentials")
+
+class PostSerializer(serializers.ModelSerializer):
+    author_username = serializers.CharField(source='author.username', read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ['id', 'author', 'author_username', 'title', 'content', 'created_at', 'updated_at']
