@@ -40,9 +40,19 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'accounts',
+    'posts',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
