@@ -43,3 +43,28 @@ Implements full CRUD functionality for blog posts.
 2. Edit and delete only your own posts.
 3. Check unauthorized access is blocked.
 4. Verify navigation between pages.
+
+# Comment Feature Documentation
+
+## Overview
+Adds a comment system for blog posts. Each comment is linked to a specific post and user.
+
+## Features
+- Display all comments under each blog post
+- Authenticated users can add new comments
+- Only comment authors can edit or delete their comments
+
+## URLs
+- Add comment: `/post/<post_id>/comments/new/`
+- Edit comment: `/comments/<id>/update/`
+- Delete comment: `/comments/<id>/delete/`
+
+## Permissions
+- **Add:** Authenticated users only
+- **Edit/Delete:** Only comment author
+
+## Testing
+1. Log in and add a comment to a post.
+2. Edit and delete your own comment.
+3. Confirm others can only view your comments, not modify them.
+
