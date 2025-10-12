@@ -25,3 +25,24 @@
 - Pagination (5 per page)
 - Search posts by title/content
 - Permissions enforce ownership
+
+## ❤️ Likes API
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| POST | /api/posts/<pk>/like/ | Like a post |
+| POST | /api/posts/<pk>/unlike/ | Unlike a post |
+
+## 🔔 Notifications API
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| GET | /api/notifications/ | List all notifications for the logged-in user |
+
+### Example Notification
+```json
+{
+  "id": 1,
+  "actor": "john",
+  "verb": "liked your post",
+  "target_object": "First Post",
+  "timestamp": "2025-10-12T15:00:00Z"
+}
