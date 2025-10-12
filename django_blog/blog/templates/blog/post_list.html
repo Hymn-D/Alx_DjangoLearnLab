@@ -16,4 +16,14 @@
 {% empty %}
 <p>No posts yet.</p>
 {% endfor %}
+
+{% if tag %}
+<h2>Posts tagged with "{{ tag }}"</h2>
+{% else %}
+<h2>All posts</h2>
+{% endif %}
+
+{% for post in posts %}
+{% endfor %}
+
 {% endblock %}

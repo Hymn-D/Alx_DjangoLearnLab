@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from .models import Post, Tag
 from .models import Comment
-from taggit.forms import TagWidget
+from taggit.forms import TagWidget # type: ignore
 
 class PostForm(forms.ModelForm):
 

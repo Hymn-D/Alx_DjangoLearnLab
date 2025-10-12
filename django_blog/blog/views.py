@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post, Comment, Tag
 from django.db.models import Q
 from .forms import CommentForm
+from taggit.models import Tag # type: ignore
 
 def register(request):
     if request.method == 'POST':
@@ -129,19 +130,29 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         return self.object.post.get_absolute_url()
 
-def posts_by_tag(request, tag_name):
-    tag = get_object_or_404(Tag, name=tag_name)
-    posts = tag.posts.all()
-    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  
+    context_object_name = 'posts'
+    paginate_by = 10
 
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        tag = get_object_or_404(Tag, slug=tag_slug)if Tag._meta.get_field('slug', None) else get_object_or_404(Tag, name=tag_slug)
+        return Post.objects.filter(tags__in=[tag])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.kwargs.get('tag_slug')
+        return context
 
 def search_posts(request):
-    query = request.GET.get('q')
-    posts = []
-    if query:
+    q = request.GET.get('q', '').strip()
+    posts = Post.objects.none()
+    if q:
         posts = Post.objects.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(tags__name__icontains=query)
+            Q(title__icontains=q) |
+            Q(content__icontains=q) |
+            Q(tags__name__icontains=q)
         ).distinct()
-    return render(request, 'blog/search_results.html', {'query': query, 'posts': posts})
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': q})

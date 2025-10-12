@@ -3,5 +3,5 @@
 <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
 <p>{{ post.content|truncatechars:150 }}</p>
 {% empty %}
-<p>No posts found matching your query.</p>
+<p>No posts found. </p>
 {% endfor %}
