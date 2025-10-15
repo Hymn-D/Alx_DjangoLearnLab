@@ -49,7 +49,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True  # Only if using HTTPS
+SECURE_SSL_REDIRECT = True  
 
 import os
 from .base import *
@@ -107,8 +107,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+           'PORT': '5432',
     }
-    'PORT': '5432',
+ 
 }
 
 
