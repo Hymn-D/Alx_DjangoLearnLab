@@ -1,7 +1,7 @@
 # relationship_app/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
-from .models import Book, Author, library
+from .models import Book, Author, Library
 
 def list_books(request):
     books = Book.objects.all()
